@@ -11,24 +11,10 @@ Esta implementación utiliza la técnica de loop unrolling para reducir el overh
 - **`Makefile`**: Configuración de compilación
 - **`output_files/`**: Directorio para resultados
 
-## Opciones de Compilación
-
 ### Variables del Makefile
 - **`CC`**: Compilador (gcc)
 - **`OPT`**: Optimizaciones (`-O3`)
 - **`CFLAGS`**: Flags de compilación con optimizaciones agresivas
-
-### Flags de Optimización
-```bash
-# Optimización nivel 3
--O3
-
-# Desenrollado automático adicional (opcional)
--funroll-loops
-
-# Información de optimizaciones
--fopt-info-optimized
-```
 
 ## Compilación
 
@@ -36,11 +22,15 @@ Esta implementación utiliza la técnica de loop unrolling para reducir el overh
 # Compilar con optimizaciones
 make
 
-# Compilar con desenrollado automático adicional
-make OPT="-O3 -funroll-loops"
+# Compilar con factor específico
+make UNROLL=8
 
-# Ver código desenrollado generado
-make assembly
+# Compilar con factor específico y desenrollado automático adicional
+make UNROLL=2 OPT="-O3 -funroll-loops"
+
+# Ejecutar el código con profiling
+./benchmark <size> -p
+
 ```
 
 ## Técnica de Loop Unrolling
@@ -64,17 +54,9 @@ for (int k = 0; k < n; k += 4) {
 }
 ```
 
-## Parámetros Configurables
-
 ### Factor de Desenrollado
 - **Típico**: 2, 4, 8, 16
 - **Consideraciones**: Balance entre tamaño de código y rendimiento
-
-### Compilación con Factor Específico
-```bash
-# Compilar con factor específico (si está implementado)
-make UNROLL_FACTOR=4
-```
 
 ## Ventajas
 
@@ -87,7 +69,7 @@ make UNROLL_FACTOR=4
 
 1. **Tamaño de código**: Incremento significativo del código generado
 2. **Cache de instrucciones**: Posible presión adicional
-3. **Complejidad**: Manejo de casos límite (cuando n no es múltiplo del factor)
+3. **Complejidad**: Manejo de casos límite (cuando n no es múltiplo del factor) no está soportado en este código
 
 ## Rendimiento Esperado
 

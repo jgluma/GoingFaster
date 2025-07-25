@@ -2,32 +2,18 @@
 
 ## Descripción
 
-Esta implementación mantiene el algoritmo naive de triple bucle pero está compilada con soporte para instrucciones AVX. Permite al compilador utilizar vectorización automática con instrucciones SIMD.
+Esta implementación mantiene el algoritmo naive de triple bucle pero está compilada con soporte para instrucciones AVX. Permite al compilador utilizar vectorización automática con instrucciones SIMD. El objetivo de este código es comprobar el rendimiento máximo que se puede obtener de forma automática sin intervención del programador.
 
 ## Archivos
 
-- **`sgemm.c`**: Implementación naive con hints para vectorización AVX
-- **`benchmark.c`**: Programa de pruebas
+- **`benchmark.c`**: Programa de pruebas, incluye la rutina de multiplicación de matrices
 - **`Makefile`**: Configuración de compilación con flags AVX
 
 ## Opciones de Compilación
 
 ### Variables del Makefile
 - **`CC`**: Compilador (gcc)
-- **`OPT`**: Optimizaciones + flags AVX (`-mavx -O3`)
-- **`CFLAGS`**: Flags estándar + optimizaciones vectoriales
-
-### Flags de AVX
-```bash
-# Habilitar instrucciones AVX (256-bit)
--mavx
-
-# Optimización nivel 3
--O3
-
-# Información de vectorización (opcional)
--fopt-info-vec-optimized
-```
+- **`OPT`**: Optimizaciones + flags AVX (descomentar las distintas opciones)
 
 ## Compilación
 
@@ -35,8 +21,8 @@ Esta implementación mantiene el algoritmo naive de triple bucle pero está comp
 # Compilar con soporte AVX
 make
 
-# Ver información de vectorización
-make CFLAGS="-mavx -O3 -fopt-info-vec-all" verbose
+# Ejecutar el código
+./benchmark
 
 # Verificar uso de instrucciones AVX en ensamblador
 objdump -d benchmark | grep -i vax

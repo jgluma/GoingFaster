@@ -11,27 +11,18 @@ Esta versión es idéntica a la implementación naive pero compilada con flags a
 - **`Makefile`**: Configuración de compilación con flags de profiling
 - **`output_files/`**: Directorio para almacenar resultados de profiling
 
-## Opciones de Compilación
+## Instrumentalización
 
-### Variables del Makefile
-- **`CC`**: Compilador (gcc)
-- **`OPT`**: Optimizaciones + instrumentalización
-- **`CFLAGS`**: Flags estándar + flags de profiling
+Las rutinas de instrumentalización se encargan de obtener los valores de 6 métricas de rendimiento durante la ejecución de una sección del código:
 
-### Flags de Instrumentalización Típicos
-```bash
-# Profiling con gprof
--pg
+- Instrucciones retiradas (es decir, totalmente ejecutadas)
+- Ciclos de CPU
+- Referencias a memoria caché
+- Fallos de memoria caché
+- Instrucciones de salto
+- Fallos de predicción de salto
 
-# Información de debug
--g
-
-# Cobertura de código
--fprofile-arcs -ftest-coverage
-
-# Información de vectorización
--fopt-info-vec-optimized -fopt-info-vec-missed
-```
+Se pueden obtener otras métricas (```perf list``` proporciona un listado con las métricas disponibles), pero no es conveniente leer muchas métricas al mismo tiempo ya que los contadores HW que las almacenan están limitados y tendrían que multiplexarse.
 
 ## Compilación y Profiling
 
@@ -41,15 +32,11 @@ make
 
 # Ejecutar para generar datos de profiling
 ./benchmark
-
-# Analizar con gprof (si se compiló con -pg)
-gprof ./benchmark gmon.out > analysis.txt
-
-# Ver información de vectorización
-gcc -O3 -fopt-info-vec-all -c sgemm.c
 ```
 
 ## Herramientas de Análisis
+
+Hay otras herramientas que se pueden utilizar para analizar el rendimiento de un código, como gprof, valgrind o perf, pero realizan el análisis sobre todo el programa.
 
 ### gprof
 ```bash
@@ -71,6 +58,9 @@ valgrind --tool=memcheck ./benchmark
 # Análisis de rendimiento
 perf record ./benchmark
 perf report
+
+# Obtención del listado de métricas disponible en ese procesador
+perf list
 ```
 
 ## Uso

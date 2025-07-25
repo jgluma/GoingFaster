@@ -18,18 +18,6 @@ Esta implementación utiliza la técnica de blocking (también conocida como til
 - **`OPT`**: Optimizaciones (`-O3`)
 - **`CFLAGS`**: Flags de compilación + definiciones de bloque
 
-### Parámetros de Blocking
-```bash
-# Tamaño de bloque por defecto
-BLOCK_SIZE ?= 64
-
-# Compilar con tamaño específico
-make BLOCK_SIZE=32
-
-# Optimización adicional
-make OPT="-O3 -march=native"
-```
-
 ## Compilación
 
 ```bash
@@ -37,13 +25,10 @@ make OPT="-O3 -march=native"
 make
 
 # Compilar con diferentes tamaños de bloque
-make clean && make BLOCK_SIZE=16
-make clean && make BLOCK_SIZE=32  
-make clean && make BLOCK_SIZE=64
-make clean && make BLOCK_SIZE=128
+make BLOCK_SIZE=16
 
-# Test de diferentes tamaños
-./test_block_sizes.sh
+# Ejecutar el código con profiling
+./benchmark <size> -p
 ```
 
 ## Técnica de Blocking
@@ -85,35 +70,6 @@ for (ii = 0; ii < n; ii += BLOCK_SIZE)
 # BLOCK_SIZE² * 4 * 3 ≤ 32768
 # BLOCK_SIZE ≤ sqrt(32768/12) ≈ 52
 # Valor práctico: 32-48
-```
-
-### Tamaños Recomendados
-- **L1 Cache**: 16-48
-- **L2 Cache**: 64-128  
-- **L3 Cache**: 256-512
-
-## Análisis de Rendimiento
-
-### Benchmark de Tamaños de Bloque
-```bash
-#!/bin/bash
-# test_block_sizes.sh
-for size in 8 16 24 32 48 64 96 128 192 256; do
-    echo "=== Block Size: $size ==="
-    make clean > /dev/null
-    make BLOCK_SIZE=$size > /dev/null
-    time ./benchmark
-    echo
-done
-```
-
-### Métricas de Cache
-```bash
-# Análisis con perf
-perf stat -e cache-references,cache-misses,L1-dcache-loads,L1-dcache-load-misses ./benchmark
-
-# Análisis detallado con cachegrind
-valgrind --tool=cachegrind --D1=32768,8,64 --LL=8388608,16,64 ./benchmark
 ```
 
 ## Características del Algoritmo
@@ -166,25 +122,8 @@ cat /sys/devices/system/cpu/cpu0/cache/index*/size
 cat /sys/devices/system/cpu/cpu0/cache/index*/level
 ```
 
-### Test de Sensibilidad
-```bash
-# Crear gráfica de rendimiento vs tamaño de bloque
-python3 plot_block_performance.py results.txt
-```
-
 ## Rendimiento Esperado
 
 - **Mejora vs Naive**: 2-5x dependiendo del tamaño de matriz
 - **Punto dulce**: Típicamente entre 32-64 para la mayoría de sistemas
 - **Escalabilidad**: Mantiene rendimiento con matrices grandes
-
-## Análisis de Resultados
-
-```bash
-# Comparar diferentes implementaciones
-echo "Naive vs Blocking:"
-echo "GFLOPS improvement: $(calc $blocking_gflops / $naive_gflops)"
-
-# Análisis de cache miss rate
-perf stat -e cache-misses,instructions ./benchmark 2>&1 | grep cache-misses
-```

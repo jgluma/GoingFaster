@@ -23,6 +23,7 @@ def test_sgemm():
     
     # Measure time
     start_time = time.time()
+    #C += np.dot(A, B)
     sgemm.square_sgemm(A, B, C)
     elapsed_time = time.time() - start_time
     print(f"Time {elapsed_time:.6f} s\n")

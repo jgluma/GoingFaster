@@ -16,7 +16,7 @@ def square_sgemm(A: np.ndarray, B: np.ndarray, C: np.ndarray) -> None:
         C: Matrix C as a 2D NumPy array (modified in-place)
     """
     n = A.shape[0]
-    
+
     # Naive implementation (triple loop)
     for i in range(n):
         for j in range(n):

@@ -2,28 +2,30 @@
 
 ## Descripción
 
-Esta implementación utiliza Python con la librería NumPy para realizar la multiplicación de matrices. Sirve como referencia de rendimiento utilizando librerías optimizadas y como comparación con las implementaciones en C.
+Esta implementación utiliza Python con la librería NumPy para realizar la multiplicación de matrices cuadradas de 512x512. Sirve como referencia de rendimiento utilizando librerías optimizadas y como comparación con las implementaciones en C.
 
 ## Archivos
 
 - **`benchmark.py`**: Script principal que ejecuta las pruebas de rendimiento
-- **`sgemm.py`**: Implementación de la multiplicación de matrices usando NumPy
+- **`sgemm.py`**: Implementación de la multiplicación de matrices en Python
 
 ## Ejecución
 
 ```bash
-# Ejecutar el benchmark
-python3 benchmark.py
 
 # Asegúrate de tener NumPy instalado
 pip3 install numpy
+
+# Ejecutar el benchmark
+python3 benchmark.py
+
 ```
 
 ## Características
 
-- **Librería utilizada**: NumPy (altamente optimizada con BLAS/LAPACK)
+- **Librería utilizada**: NumPy para crear las matrices
 - **Lenguaje**: Python 3
-- **Optimizaciones**: Las proporcionadas por NumPy (vectorización, SIMD, multithreading)
+- **Optimizaciones**: Prueba a modificar la función square_sgemm para que utilize el producto np.dot de Numpy, el cual incluye técnicas avanzadas como las que se incluyen en el resto de secciones
 
 ## Notas
 

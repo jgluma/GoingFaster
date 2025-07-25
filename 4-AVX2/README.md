@@ -11,27 +11,10 @@ Esta implementación utiliza instrucciones AVX2 para vectorización explícita, 
 - **`Makefile`**: Configuración de compilación con flags AVX2
 - **`output_files/`**: Directorio para resultados
 
-## Opciones de Compilación
-
 ### Variables del Makefile
 - **`CC`**: Compilador (gcc)
 - **`OPT`**: Optimizaciones + flags AVX2 (`-mavx2 -mfma -O3`)
 - **`CFLAGS`**: Flags de compilación vectorial
-
-### Flags de AVX2
-```bash
-# Habilitar instrucciones AVX2 (256-bit)
--mavx2
-
-# Habilitar FMA (Fused Multiply-Add)
--mfma
-
-# Optimización nivel 3
--O3
-
-# Información de vectorización
--fopt-info-vec-all
-```
 
 ## Compilación
 
