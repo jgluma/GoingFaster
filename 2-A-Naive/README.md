@@ -72,7 +72,6 @@ $$ dif= \sum_{x=0}^{n^2−1} \|C\[x\]−Cref\[x\]\| $$
  
 Debido a la inherente inexactitud y acumulación de errores de redondeo en las operaciones de punto flotante (precisión simple, float), se establece una tolerancia máxima, `max_error`, fijada en 0.00001.
 - Si la diferencia acumulada es mayor que la tolerancia (`dif > max_error`), se imprime un mensaje de fallo (`Bad multiplication routine, absolute error: %f`)
-- Si la diferencia es aceptable, se confirma la corrección de la rutina (`Multiplication routine works correctly`). La verificación de corrección solo debe hacerse al modificar la rutina `square_sgemm`, pero nunca cuando se quieran medir tiempos.
+- Si la diferencia es aceptable, se confirma la corrección de la rutina (`Multiplication routine works correctly`).
 
-#### Ejecutar el benchmark verificando la corrección
-```./benchmark -c```
+La verificación de corrección solo debe hacerse al modificar la rutina `square_sgemm`, pero nunca cuando se quieran medir tiempos. Para hacer la verificación hay que descomentar la línea donde se llama a la rutina.
